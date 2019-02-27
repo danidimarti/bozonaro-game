@@ -1,12 +1,10 @@
+
+
 var gameWidth, gameHeight, canvas, c, thrower;
 
 var bozoImg = new Image();
 
-var bozo = {
-    x
-    imgUrl
 
-}
 
 
 window.onload = function () {

@@ -1,4 +1,4 @@
-window.onload = function () {}
+window.onload = function () { }
 
 /*======DEFINING CANVAS =====*/
 var canvas = document.getElementById("mycanvas");
@@ -11,16 +11,10 @@ var gameWidth = canvas.width;
 var gameHeight = canvas.height;
 
 
-/*====== LOAD BOZO IMAGE =====*/
+/*====== IMAGES =====*/
 
-var bozoImg = {
-    onload: function () {
-        drawImage(bozoImg, 0, 0)
-    },
-    src: 'assets/bg.png',
-}
+let imgBozo = document.getElementById("bozo");
 
-var bozo = new Image();
 
 /*====== THROW UPPER OBJECT =====*/
 class Thrower {
@@ -56,6 +50,7 @@ class Thrower {
     draw(c) {
         c.fillStyle = 'green';
         c.fillRect(this.x, this.y, this.width, this.height);
+
     }
 
     // we want to change the rect 5 pixels/sec 
@@ -77,12 +72,10 @@ class Thrower {
 
 /*====== CREATE AND DRAW THROWUPER =====*/
 let thrower = new Thrower(gameWidth, gameHeight)
-
 thrower.draw(c);
 
 
-
-/*====== ANIMATE THROWUPER =====*/
+/*====== ANIMATION LOOP =====*/
 let lastTime = 0;
 
 function animate(timestamp) {
@@ -101,6 +94,8 @@ function animate(timestamp) {
     //draws the thrower again at the new position
     thrower.draw(c);
 
+    c.drawImage(bozo, 200, 200);
+    
 }
 
 animate();
@@ -146,17 +141,19 @@ class InputHandler {
 new InputHandler(thrower);
 
 
-
-
-
-
 /*====== ANIMATE BOZO  =====*/
 class Bozo {
+constructor() {
+this.image = document.getElementById("bozo");
+}
 
+draw(c) {
 
+}
 
-    update() {
-        //TODO
-    }
+update() {
+
+}
+
 
 }
