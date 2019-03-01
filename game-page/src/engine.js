@@ -1,52 +1,45 @@
+window.onload = function () { }
+
+/*======DEFINING CANVAS =====*/
+var canvas = document.getElementById("mycanvas");
+var c = canvas.getContext('2d');
+
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
+
+var gameWidth = canvas.width;
+var gameHeight = canvas.height;
 
 
-var gameWidth, gameHeight, canvas, c, thrower;
-
-var bozoImg = new Image();
-
-
-
-
-window.onload = function () {
-    /*======DEFINING CANVAS =====*/
-    canvas = document.getElementById("mycanvas");
-    c = canvas.getContext('2d');
-
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-
-    gameWidth = canvas.width;
-    gameHeight = canvas.height;
-
-    /*====== CREATE AND DRAW THROWUPER =====*/
-    thrower = new Thrower(gameWidth, gameHeight)
-
-
-    new InputHandler(thrower);
-
-    bozoImgScale = 150 / 173;
-    bozoImg.onload = function () {
-        animate();
-    }
-
-    bozoImg.src = "./assets/Bozo-Head.png"
+/*====== IMAGES =====*/
+window.onload = function() {
+    var canvas = document.getElementById("mycanvas");
+    v
+    ar c = canvas.getContext("2d");
+    var bozo = document.getElementById("bozo");
+    c.drawImage(bozo, 100, 100);
 
 }
+
+
+
 
 /*====== THROW UPPER OBJECT =====*/
 class Thrower {
     constructor(gameWidth, gameHeight) {
         this.gameWidth = gameWidth;
         this.width = 300;
-        this.height = 30;
+        this.height = 50;
 
         //creating the speed of the arrow movement
         this.maxSpeed = 7;
-        this.speed = 0;
+        this.speed = 0
 
-        //initial position on the middle of the canvas        this.position = {
+        //initial position on the middle of the canvas
+
         this.x = gameWidth / 2 - this.width / 2;
-        this.y = gameHeight - this.height - 10;
+        this.y = 10;
+
     }
 
     //when moving left, the current speed will be the same as the max speed 10pixels/second, but negative because is going on the oposite side of the initial position
@@ -62,15 +55,15 @@ class Thrower {
         this.speed = 0;
     }
 
-    draw() {
+    draw(c) {
         c.fillStyle = 'green';
         c.fillRect(this.x, this.y, this.width, this.height);
+
     }
 
-    // change the rect 5 pixels/sec 
+    // we want to change the rect 5 pixels/sec 
     //dt = the difference in time between two frames. 
     update(dt) {
-        //bozoImg.onload
         if (!dt) return;
         //the updated position will be the speed which is the same as the current position of the object.
 
@@ -85,79 +78,15 @@ class Thrower {
     }
 }
 
+/*====== CREATE AND DRAW THROWUPER =====*/
+let thrower = new Thrower(gameWidth, gameHeight)
+thrower.draw(c);
 
 
-class Bozo {
-    constructor(x, y) {
-        this.x = x;
-        this.y = y;
-    }
-    update = function () {
-
-        // if (this.x + this.radius > innerWidth || x - this.radius < 0) {
-        //     this.dx = - this.dx;
-        // }
-
-        // if (this.y + this.radius > this.innerHeight || y - radius < 0) {
-        //     this.dy = -this.dy;
-        // }
-        // this.x += this.dx;
-        // this.y += this.dy;
-
-        //bozoImg.onload;
-
-    }
-
-}
-
-// /*====== BOZO OBJECT =====*/
-// function Bozo(x, y){
-//     this.x = x;
-//     this.y = y;
-// }
-
-// // class Bozo {
-// //     constructor() {
-// //         this.x = x;
-// //         this.y = y;
-// //     }
-
-// Bozo.prototype.update = function() {
-
-//     // if (this.x + this.radius > innerWidth || x - this.radius < 0) {
-//     //     this.dx = - this.dx;
-//     // }
-
-//     // if (this.y + this.radius > this.innerHeight || y - radius < 0) {
-//     //     this.dy = -this.dy;
-//     // }
-//     // this.x += this.dx;
-//     // this.y += this.dy;
-
-//     bozoImg.onload;
-
-// }
-
-// let bozoImg = new Bozo;
-// bozoImg.src = './assets/Bozo-Head.png'
-// bozoImg.onload = function () {
-
-//     c.drawImage(bozoImg, 0, 0, 200, 200)
-
-// }
-
-
-
-
-
-
-
-
-/*====== ANIMATE THROWUPER =====*/
+/*====== ANIMATION LOOP =====*/
 let lastTime = 0;
 
 function animate(timestamp) {
-    //bozoImg.onload
     let dt = timestamp - lastTime;
     lastTime = timestamp
     requestAnimationFrame(animate)
@@ -166,23 +95,23 @@ function animate(timestamp) {
     // clear canvas each time you draw on top of it. Otherwise the circle will look like a continuous line
     c.clearRect(0, 0, gameWidth, gameHeight);
 
-    c.drawImage(bozoImg, 0, 0, 150 * bozoImgScale, 150);
-
     // updates the thrower to it's new position 
     thrower.update(dt);
 
     // call the thrower.draw() method inside the animate function so it does not get affected when we clear the browser at each loop.
     //draws the thrower again at the new position
-    thrower.draw();
-
+    thrower.draw(c);
+    
 }
 
+animate();
 
 
 /*======MOVE OBJECT WITH ARROW KEYS =====*/
 
 //Create event listener based on KeyCode number of arrows left and right.
 class InputHandler {
+
     constructor(thrower) {
         document.addEventListener("keydown", event => {
             // alert(event.keyCode) - checking the keyCode numbers of arrow keys.
@@ -215,3 +144,25 @@ class InputHandler {
     }
 }
 
+new InputHandler(thrower);
+
+
+/*====== ANIMATE BOZO  =====*/
+// class Bozo {
+// constructor() {
+// this.image = document.getElementById("bozo");
+// }
+
+// draw(c) {
+
+//     c.drawImage(this.imabozo, 200, 200);
+// }
+
+// update() {
+
+// }
+
+
+// }
+
+// let imgBozo = new Bozo();
