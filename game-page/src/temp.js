@@ -40,14 +40,6 @@ window.onload = function () {
 
     bozoImg.src = "./assets/Bozo-Head.png"
 
-    /* -- CREATE THROWUPER --*/
-    throwerImgScale = 300 / 316;
-    throwerImg.onload = function () {
-        animate();
-    }
-
-    throwerImg.src = "./assets/open-mouth-smaller.png"
-
 
     /*-- CREATE VOMIT --*/
     vomitImgScale = 0.5;
@@ -64,47 +56,29 @@ class Thrower {
     constructor(gameWidth, gameHeight) {
         this.gameWidth = gameWidth;
         this.width = 150;
-        this.height = 50;
-
-        //creating the speed of the arrow movement
+        this.height = 150;
         this.maxSpeed = 7;
         this.speed = 0;
-
-        //initial position on the middle of the canvas 
         this.x = gameWidth / 2 - this.width / 2;
         this.y = gameHeight - this.height - 10;
+        this.image = new Image(this.width * (300 / 316), this.height)
+        this.image.src = "./assets/open-mouth-smaller.png";
+        this.image.onload = animate
     }
-
-    //when moving left, the current speed will be the same as the max speed 10pixels/second, but negative because is going on the oposite side of the initial position
     moveLeft() {
         this.speed = -this.maxSpeed;
     }
-
     moveRight() {
         this.speed = this.maxSpeed;
     }
-
     stop() {
         this.speed = 0;
     }
-
     draw() {
-        c.fillStyle = 'green';
-        c.fillRect(this.x, this.y, this.width, this.height);
-
-
-        // c.drawImage(throwerImg.src, this.x, this.y, this.width, this.height);
-
+        c.drawImage(this.image, this.x, this.y)
     };
-
-    // change the rect 5 pixels/sec 
-    //dt = the difference in time between two frames. 
     update(dt) {
-
         if (!dt) return;
-        //the updated position will be the speed which is the same as the current position of the object.
-
-        //making sure the thrower stops at end of the canvas.
         this.x += this.speed;
         if (this.x < 0) {
             this.x = 0;
@@ -140,7 +114,6 @@ function animate(timestamp) {
     //draws the thrower again at the new position
 
     thrower.draw();
-    c.drawImage(throwerImg, 500, 400, 150 * throwerImgScale, 150)
     c.drawImage(bozoImg, 200, 200, 150 * bozoImgScale, 150);
     c.drawImage(vomitImg, 100, 100, 150 * vomitImgScale, 150 * vomitImgScale);
 
