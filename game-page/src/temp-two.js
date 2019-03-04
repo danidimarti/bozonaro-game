@@ -2,8 +2,9 @@
 
 var gameWidth, gameHeight, canvas, c;
 var thrower;
-
 var vomitArray = [];
+var hitCounter = 0;
+var missedCounter = 0;
 
 /*======= LOADING RESOURCES ======= */
 
@@ -13,13 +14,14 @@ window.onload = function () {
     canvas = document.getElementById("canvas");
     c = canvas.getContext('2d');
 
-    canvas.width = innerWidth * 0.8;
-    canvas.height = innerHeight * 0.8;
+    canvas.width = innerWidth;
+    canvas.height = innerHeight;
 
     gameWidth = canvas.width;
     gameHeight = canvas.height;
 
     /*-- CREATE NEW OBJECTS --*/
+
     thrower = new Thrower(gameWidth, gameHeight)
     vomit = new Vomit(gameWidth, gameHeight);
     bozo = new Bozo(gameWidth, gameHeight);
@@ -28,6 +30,10 @@ window.onload = function () {
     handlers = { 'thrower': thrower, 'vomit': vomit };
     new InputHandler(handlers);
 
+
+    // var vomitEffect = new Audio('./audio/themesongedit.mp3');
+    score = new Score();
+    background = new Background(gameWidth, gameHeight);
 }
 
 /*====== THROW UPPER OBJECT =====*/
@@ -41,7 +47,7 @@ class Thrower {
         this.x = gameWidth / 2 - this.width / 2;
         this.y = this.height - 150;
         this.image = new Image(this.width, this.height)
-        this.image.src = "./assets/open-mouth-person.png";
+        this.image.src = "./assets/open-mouth-person-3.png";
         this.image.onload = animate
     }
     moveLeft() {
@@ -81,6 +87,7 @@ function animate(timestamp) {
 
     // clear canvas each time you draw on top of it. Otherwise the circle will look like a continuous line
     c.clearRect(0, 0, gameWidth, gameHeight);
+    background.draw()
 
     /*======DRAW IMAGES =====*/
     // updates the thrower to it's new position 
@@ -93,10 +100,12 @@ function animate(timestamp) {
 
     thrower.draw();
     bozo.draw();
+    score.draw()
 
     for (var i = 0; i < vomitArray.length; i++) {
         vomitArray[i].move();
         vomitArray[i].render();
+        vomitArray[i].reset();
         // while (bozo.visible == true) {
         //     if (vomitArray[i].onHit(bozo) {
         //       bozo.visible == false; 
@@ -135,6 +144,7 @@ class InputHandler {
                 case 32:
                     vomitArray.push(new Vomit(canvas.width, thrower.x));
                     handlers.vomit.moving = true;
+                    vomiting.play()
                     break;
             }
         });
@@ -164,10 +174,12 @@ class InputHandler {
 }
 
 class Bozo {
-    constructor(gameWidth, gameHeight) {
+    constructor(x, y) {
         this.x = Math.random() * gameWidth;
-        this.height = gameHeight - 100;
-        this.y = Math.random() * this.height;
+        // ymin = 100;
+        // ymax = gameHeight - 50;
+
+        this.y = Math.random() * (gameHeight - 100);
         this.image = new Image()
         this.image.src = "assets/Bozo-Head.png";
         this.image.onload = animate
@@ -179,8 +191,14 @@ class Bozo {
     };
 
     onHit = function () {
+       var _this = this;
         this.visible = false;
+        draw() {
+            _this.image = new Image()
+            this.image.src = "assets/Bozo-Head-hit.png"
+        }
     }
+
 
 }
 
@@ -200,7 +218,7 @@ class Vomit {
         this.image.onload = animate
     }
     move() {
-        this.y = this.y + 1;
+        this.y += 1;
     }
     align(thrower) {
         console.log("vomit aligned");
@@ -208,14 +226,20 @@ class Vomit {
     }
 
     colision(bozo) {
+
         if (bozo.x == this.x || bozo.y == this.y) {
-            bozo.onHit;
-        }
+            ++hitCounter;
+            return true;
+        } return false; 
     }
 
     draw() {
         c.drawImage(this.image, this.x, this.y)
     };
+
+    reset() {
+        this.speed = 0
+    }
 
     render() {
         this.move();
@@ -223,3 +247,50 @@ class Vomit {
     }
 }
 
+
+class Background {
+    constructor(gameWidth, gameHeight) {
+        this.width = gameWidth;
+        this.height = gameHeight;
+        this.speed = 0.2;
+        this.x = 0;
+        this.y = 0;
+        this.image = new Image()
+        this.image.src = "assets/bg-star-2.jpg";
+        this.image.onload = animate;
+
+    }
+
+    draw() {
+        this.y += this.speed;
+        c.drawImage(this.image, this.x, this.y)
+        if (this.y >= gameHeight) {
+            this.y = 0;
+        }
+        // Draw another image at the top edge of the first image
+        c.drawImage(this.image, this.x, this.y - gameHeight);
+    };
+
+    reset() {
+        this.speed = 0;
+    }
+
+}
+
+class Score {
+    constructor(x, y) {
+        this.x = gameWidth;
+        this.y = gameHeight;
+
+    }
+
+    draw() {
+        c.fillStyle = "white";
+        c.font = "24px Helvetica";
+        c.textAlign = "left";
+        c.textBaseline = "top";
+        c.fillText("Hits: " + hitCounter, 50, gameHeight - 100);
+        c.fillText("Missed: " + missedCounter + "/3", 50, gameHeight - 60);
+
+    }
+}

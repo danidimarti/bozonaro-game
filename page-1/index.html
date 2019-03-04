@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <title>Bozonaro, the game</title>
@@ -8,27 +9,35 @@
     <link rel="stylesheet" href="styles.css">
     <link rel="icon" href="assets\img\Bozo Head.png" type="image">
 </head>
+
 <body>
     <div id="banner">
-    <div class="title">
-        <h1><a href="index.html">BOZONARO, THE GAME</a></h1>
+        <div class="title">
+            <h1><a href="index.html">BOZONARO, THE GAME</a></h1>
+        </div>
+        <div><img class="bozo-gif" src="Bozo-gif-SMALLER-center.gif" alt="Bozo-gif"></div>
+        <div class="startScreen" id="remove-screen">
+            <button class="btn btn-play"><a href="game-page\game.html"></a>PLAY GAME</button>
+        </div>
+        <div id="instructions">
+            <h3>INSTRUCTIONS</h3>
+            <div class="inst-icons">
+                <img id="arrow-left" src="arrow-left.png" alt="arrow left">
+                <p>MOVES LEFT</p>
+            </div>
+            <div class="inst-icons">
+                <img id="arrow-right" src="arrow-right.png" alt="arrow right">
+                <p>MOVES RIGHT</p>
+            </div>
+            <div class="inst-icons">
+                <img id="space-bar" src="space-bar-smaller.png" alt="Spacebar">
+                <img id="vomit" src="vomit.png" alt="Vomit">
+                
+            </div>
+        </div>
     </div>
-    <div><img class="bozo-gif" src="Bozo-gif-SMALLER-center.gif" alt="Bozo-gif"></div>
-    <div class="startScreen" id="remove-screen">
-        <button class="btn btn-play"><a href="game-page\game.html"></a>PLAY GAME</button>
-    </div>
-    <div id="instructions">
-        <h3>INSTRUCTIONS</h3>
-        <img id="arrow-left" src="arrow-left.png" alt="arrow left">
-        <p>MOVES LEFT</p>
-        <img id="arrow-right" src="arrow-right.png" alt="arrow right">
-        <p>MOVES RIGHT</p>
-        <img id="vomit" src="vomit.png" alt="Spacebar">
-        <p>VOMIT</p>
-    </div>
-</div>
-    
-       
+
+
     <script type="text/javascript" src="assets/js/index.js"></script>
 </body>
 

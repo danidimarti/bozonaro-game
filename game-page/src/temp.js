@@ -153,7 +153,7 @@ class InputHandler {
                     if (thrower.speed < 0)
                         thrower.stop();
                     break;
-                    case 39:
+                case 39:
                     if (thrower.speed > 0)
                         thrower.stop();
                     break;
@@ -202,4 +202,6 @@ class Vomit {
         }
     }
 }
+
+
 

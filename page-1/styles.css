@@ -1,39 +1,39 @@
 /* font-family: 'Staatliches', cursive;
 font-family: 'Cuprum', sans-serif; */
+
 /* COLORS:
 rgb(185, 37, 0); */
 
 * {
-  font-family:'Cuprum', sans-serif;
+  font-family: 'Cuprum', sans-serif;
   margin: 0 auto;
   text-align: center;
 }
 
 html {
+  font-family: "Helvetica Neue", Arial, sans-serif;
   
-  font-family: "Helvetica Neue", Arial, sans-serif; */
-}
-
-body {
-  /* background-image: url("sky.jpg") */
 }
 
 div#banner {
   width: 100%;
- 
+  height: 100%;
   margin: 0px;
   background-color: #000000;
-  background-image: url("twinkle-star-png-stars-9.png");
-  background-position: -120% 0px;
+  background-image: url("bg-star-2.jpg");
+  background-position: 0px -100%;
   background-repeat: repeat;
   animation: animate-background 50s linear infinite;
 }
 
 @keyframes animate-background {
- from { background-position: 0% 0;}
-
-  to{ background-positio:  2000% 0;}
-} 
+  from {
+    background-position: 0% 0;
+  }
+  to {
+    background-positio: 0 2000%;
+  }
+}
 
 h1 {
   font-size: 80px;
@@ -55,12 +55,11 @@ h1 a:hover {
 }
 
 bozo-gif {
- padding: 20px;
-
+  padding: 20px;
 }
 
 body button {
-  font-size: 25px;
+  font-size: 2em;
   background-color: rgb(196, 41, 2);
   color: white;
   width: 400px;
@@ -70,8 +69,7 @@ body button {
   box-shadow: #fff;
   border-radius: 5px;
   margin: 20px;
-  box-shadow: 0 4px  rgb(107, 22, 1);
-  
+  box-shadow: 0 4px rgb(107, 22, 1);
 }
 
 button:hover {
@@ -80,30 +78,33 @@ button:hover {
   background-position: center;
   -webkit-filter: grayscale(10%);
   color: #dee5ef;
-  box-shadow: 0 4px  rgb(107, 22, 1);
+  box-shadow: 0 4px rgb(107, 22, 1);
   /* -moz-box-shadow:    inset 0 0 10px #000000;
   -webkit-box-shadow: inset 0 0 10px #000000;
   box-shadow:inset 0 0 10px #000000; */
 }
 
 #instructions {
-  
   width: 400px;
+  height: 300px;
+  box-sizing: border-box;
   padding: 10px 30px 10px 30px;
   border-radius: 5px;
   background-color: #dee5ef;
   margin-top: 10px;
   margin-bottom: 10px;
+ 
 }
 
 #instructions p {
   background-color: #dee5ef;
-  font-size: 14px;
-  
+  font-size: 1em;
+  margin: 0px 0px 0px 10px;
+  padding-top: 20px;
 }
 
 #instructions h3 {
-  font-size: 2.0em;
+  font-size: 1.5em;
   background-color: #dee5ef;
   padding-bottom: 15px;
   color: black;
@@ -112,5 +113,24 @@ button:hover {
 #vomit, #arrow-left, #arrow-right {
   width: 20%;
   height: 20%;
+  margin: 0px;
+  
 }
 
+#space-bar {
+  width: 50%;
+  height: 5%;
+  margin: 0px;
+ 
+}
+
+.inst-icons {
+width: 300px;
+display: flex;
+justify-content: center;
+margin:10px 0px;
+padding: 0px;
+
+
+
+}
