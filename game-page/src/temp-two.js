@@ -99,6 +99,8 @@ function animate(timestamp) {
     //draws the thrower again at the new position
 
     thrower.draw();
+
+
     bozo.draw();
     score.draw()
 
@@ -106,6 +108,11 @@ function animate(timestamp) {
         vomitArray[i].move();
         vomitArray[i].render();
         vomitArray[i].reset();
+
+    }
+
+    if (vomit.colision(bozo)) {
+        bozo.onHit;
         // while (bozo.visible == true) {
         //     if (vomitArray[i].onHit(bozo) {
         //       bozo.visible == false; 
@@ -174,33 +181,38 @@ class InputHandler {
 }
 
 class Bozo {
-    constructor(x, y) {
-        this.x = Math.random() * gameWidth;
-        // ymin = 100;
-        // ymax = gameHeight - 50;
-
-        this.y = Math.random() * (gameHeight - 100);
+    constructor(x,y) {
+        x = Math.random() * gameWidth;
+        y = Math.random() * gameHeight;
+        this.x = x;
+        this.y = y;
         this.image = new Image()
         this.image.src = "assets/Bozo-Head.png";
         this.image.onload = animate
-        this.visible = true;
+        this.hitMark = [];
+
+        // Check vertical edges
+        if (x >= (gameWidth)) { x = gameWidth - 100; }
+        else if (x < (0)) { x = gameWidth + 100; }
+
+
+        //  Check horizontal edges
+        if (y >= (gameHeight)) { y = gameHeight - 100; }
+        else if (y < (0)) { y = gameHeight + 100; }
     }
 
     draw() {
+        this.visible = true;
         c.drawImage(this.image, this.x, this.y)
+
     };
 
     onHit = function () {
-       var _this = this;
         this.visible = false;
-        draw() {
-            _this.image = new Image()
-            this.image.src = "assets/Bozo-Head-hit.png"
-        }
     }
 
 
-}
+};
 
 
 class Vomit {
@@ -221,7 +233,6 @@ class Vomit {
         this.y += 1;
     }
     align(thrower) {
-        console.log("vomit aligned");
         this.x = thrower.x + thrower.width / 2 + 25;
     }
 
@@ -230,7 +241,7 @@ class Vomit {
         if (bozo.x == this.x || bozo.y == this.y) {
             ++hitCounter;
             return true;
-        } return false; 
+        } return false;
     }
 
     draw() {
