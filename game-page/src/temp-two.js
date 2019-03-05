@@ -14,8 +14,8 @@ window.onload = function () {
     canvas = document.getElementById("canvas");
     c = canvas.getContext('2d');
 
-    canvas.width = innerWidth;
-    canvas.height = innerHeight;
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
 
     gameWidth = canvas.width;
     gameHeight = canvas.height;
@@ -34,6 +34,10 @@ window.onload = function () {
     // var vomitEffect = new Audio('./audio/themesongedit.mp3');
     score = new Score();
     background = new Background(gameWidth, gameHeight);
+
+    requestAnimationFrame(animate)
+
+    
 }
 
 /*====== THROW UPPER OBJECT =====*/
@@ -48,7 +52,7 @@ class Thrower {
         this.y = this.height - 150;
         this.image = new Image(this.width, this.height)
         this.image.src = "./assets/open-mouth-person-3.png";
-        this.image.onload = animate
+  //      this.image.onload = animate
     }
     moveLeft() {
         this.speed = -this.maxSpeed;
@@ -151,7 +155,7 @@ class InputHandler {
                 case 32:
                     vomitArray.push(new Vomit(canvas.width, thrower.x));
                     handlers.vomit.moving = true;
-                    vomiting.play()
+                    
                     break;
             }
         });
@@ -182,23 +186,23 @@ class InputHandler {
 
 class Bozo {
     constructor(x,y) {
-        x = Math.random() * gameWidth;
-        y = Math.random() * gameHeight;
+        x = Math.random() * (gameWidth - 150);
+        y = (Math.random() * (gameHeight - 350)) + 150;
         this.x = x;
         this.y = y;
         this.image = new Image()
         this.image.src = "assets/Bozo-Head.png";
-        this.image.onload = animate
+        //this.image.onload = animate
         this.hitMark = [];
 
-        // Check vertical edges
-        if (x >= (gameWidth)) { x = gameWidth - 100; }
-        else if (x < (0)) { x = gameWidth + 100; }
+        // // Check vertical edges
+        // if (this.x >= (gameWidth)) { this.x = gameWidth - 100; }
+        // else if (this.x < (0)) { this.x = gameWidth + 400; }
 
 
-        //  Check horizontal edges
-        if (y >= (gameHeight)) { y = gameHeight - 100; }
-        else if (y < (0)) { y = gameHeight + 100; }
+        // //  Check horizontal edges
+        if (this.y >= (gameHeight)) { this.y = gameHeight - 100; }
+        else if (this.y < (0)) { this.y = gameHeight + 100; }
     }
 
     draw() {
@@ -227,10 +231,10 @@ class Vomit {
         this.y = 60;
         this.image = new Image()
         this.image.src = "assets/vomit-smaller.png";
-        this.image.onload = animate
+       //this.image.onload = animate
     }
     move() {
-        this.y += 1;
+        this.y += 5;
     }
     align(thrower) {
         this.x = thrower.x + thrower.width / 2 + 25;
@@ -249,7 +253,7 @@ class Vomit {
     };
 
     reset() {
-        this.speed = 0
+        this.speed = 0;
     }
 
     render() {
@@ -268,7 +272,7 @@ class Background {
         this.y = 0;
         this.image = new Image()
         this.image.src = "assets/bg-star-2.jpg";
-        this.image.onload = animate;
+ //       this.image.onload = animate;
 
     }
 
@@ -282,9 +286,7 @@ class Background {
         c.drawImage(this.image, this.x, this.y - gameHeight);
     };
 
-    reset() {
-        this.speed = 0;
-    }
+    
 
 }
 

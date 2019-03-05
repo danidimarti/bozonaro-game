@@ -76,32 +76,29 @@ button:hover {
   background-color: rgb(173, 36, 2);
   background-size: 350px;
   background-position: center;
-  -webkit-filter: grayscale(10%);
   color: #dee5ef;
   box-shadow: 0 4px rgb(107, 22, 1);
-  /* -moz-box-shadow:    inset 0 0 10px #000000;
-  -webkit-box-shadow: inset 0 0 10px #000000;
-  box-shadow:inset 0 0 10px #000000; */
-}
+ }
 
 #instructions {
-  width: 400px;
-  height: 300px;
+  width: 250px;
+  height: 200px;
   box-sizing: border-box;
   padding: 10px 30px 10px 30px;
   border-radius: 5px;
-  background-color: #CFDBD5;
+  background-color: white;
   margin-top: 10px;
   margin-bottom: 10px;
+  
  
 }
 
 #instructions p {
   background-color:transparent;
   font-size: 1em;
-  margin: 0px 0px 0px 10px;
-  /* padding-top: 20px; */
-  
+  margin: 0px;
+  padding-left: 50px;
+  margin-top: 5px;
 }
 
 #instructions h3 {
@@ -109,26 +106,39 @@ button:hover {
   background-color: transparent;
   padding-bottom: 15px;
   color: black;
+  text-decoration: underline;
 }
 
-#vomit, #arrow-left, #arrow-right {
+#arrow-left, #arrow-right {
   width: 10%;
   height: 10%;
   margin: 0px;
+  /* display: block; */
   
 }
 
 #space-bar {
-  width: 25%;
+  width: 20%;
+  height: 10%;
+  margin: 0px;
+  margin-top: 10px;
+  /* display: block; */
+}
+
+ #vomit{
+  width: 10%;
   height: 5%;
   margin: 0px;
+  display: block;
+  padding-left: 20px;
  
 }
 
 .inst-icons {
-/* width: 300px; */
-
+width: 300px;
+display: flex;
 justify-content: left;
+
 margin:10px 0px;
 padding: 0px;
 
