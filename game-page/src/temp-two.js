@@ -12,6 +12,7 @@ var missedCounter = 0;
 
 
 
+
 /*======= LOADING RESOURCES ======= */
 
 //Add all objects inside the onload fuction so they will be ready to animate later
@@ -31,19 +32,13 @@ window.onload = function () {
     thrower = new Thrower(gameWidth, gameHeight)
     vomit = new Vomit(gameWidth, gameHeight);
     bozo = new Bozo();
-
-    /* -- HANDLERS -- */
-    handlers = { 'thrower': thrower, 'vomit': vomit };
-    new InputHandler(handlers);
-
-
-    // var vomitEffect = new Audio('./audio/themesongedit.mp3');
     score = new Score();
     background = new Background(gameWidth, gameHeight);
 
 
-
-
+    /* -- HANDLERS -- */
+    handlers = { 'thrower': thrower, 'vomit': vomit };
+    new InputHandler(handlers);
 
 }
 
@@ -94,8 +89,6 @@ function animate(timestamp) {
     let dt = timestamp - lastTime;
     lastTime = timestamp;
 
-    // console.log("checking function loop") 
-
     // clear canvas each time you draw on top of it. Otherwise the circle will look like a continuous line
     c.clearRect(0, 0, gameWidth, gameHeight);
     background.draw()
@@ -119,9 +112,6 @@ function animate(timestamp) {
         }
     }
 
-    //console.log(vomitArray);
-
-
     //from single vomit to array
     if (vomitArray !== undefined) {
         for (var i = 0; i < vomitArray.length; i++) {
@@ -143,10 +133,9 @@ function animate(timestamp) {
 
             }
 
-
-            //vomitArray[i].coordinates();
         }
     }
+
     if (bozo.endGame == false) {
         requestAnimationFrame(animate);
     } else {
@@ -157,23 +146,28 @@ function animate(timestamp) {
     if (Math.floor(lastTime) % 151 == 0) {
         bozo.randomizeLocation();
     }
-    
+    if (missedCounter == 3) {
+        c.clearRect(0, 0, gameWidth, gameHeight);
+        loseAnimation(timestamp);
+    }
 
 }
 
 function endAnimation(timestamp) {
-    let dt = timestamp - lastTime;
+    bozo.degrees++
+    if (bozo.degrees == 360) { degrees = 0 }
     c.clearRect(0, 0, gameWidth, gameHeight);
 
-    lastTime = timestamp;
-    // console.log("checking function loop") 
+    bozo.rotate(bozo.degrees);
+    
+}
+
+function loseAnimation(timestamp) {
+    c.clearRect(0, 0, gameWidth, gameHeight);
     background.draw()
     bozo.rotate();
-    // clear canvas each time you draw on top of it. Otherwise the circle will look like a continuous line
-
-    requestAnimationFrame(endAnimation);
-
 }
+
 /*======MOVE OBJECT WITH ARROW KEYS =====*/
 //Create event listener based on KeyCode number of arrows left and right.
 class InputHandler {
@@ -231,6 +225,7 @@ class Bozo {
         this.animStage = 0;
         this.animLength = 14;
         this.endGame = false;
+        this.degrees = 0;
         this.image.src = 'assets/Bozo-Vomits/BV0.png';
         this.validateLocation();
 
@@ -249,7 +244,6 @@ class Bozo {
 
         if (this.y < 200) {
             this.y += 200;
-            console.log("bozo went too far up");
         }
     }
 
@@ -273,21 +267,59 @@ class Bozo {
         c.drawImage(this.image, this.x, this.y);
     };
 
-    endGameFunc(c) {
-        this.visible();
-        //c.clearRect(0, 0, gameWidth, gameHeight);
+    rotate(degrees) {
+
+        c.clearRect(0, 0, gameWidth, gameHeight);
+
+        background.draw()
+        this.youWin()
+        c.save();
+        // this.x = gameWidth / 2 - this.width;
+        // this.y = gameHeight / 2 - this.height;
+        c.translate(gameWidth / 2, gameHeight / 2);
+        c.rotate(degrees * Math.PI / 180);
+
+        this.image = new Image();
+        // this.image.style.width = "200%";
+        // this.image.style.height = "200%";
+        this.image.src = "assets/Bozo-Vomits/BV14.png";
+        c.drawImage(this.image, -this.image.width / 2, -this.image.height / 2, this.width, this.height);
+
+        c.restore()
 
     };
 
-    rotate() {
-        this.x = gameWidth / 2 - this.width;
-        this.y = gameHeight / 2 - this.height;
-        this.image = new Image();
-        this.image.style.width = "200%";
-        this.image.style.height = "200%";
-        this.image.src = "assets/Bozo-Vomits/BV14.png";
+    youWin() {
+        c.fillStyle = "red";
+        c.font = "60px Cuprum";
+        c.textAlign = "center";
+        c.textBaseline = "bottom";
+        c.fillText("YOU WIN!", gameWidth / 2, 200);
 
-        c.drawImage(this.image, this.x, this.y, this.width * 2, this.height * 2);
+    }
+
+    youLose() {
+        c.fillStyle = "red";
+        c.font = "60px Cuprum";
+        c.textAlign = "center";
+        c.textBaseline = "bottom";
+        c.fillText("YOU LOSE!", gameWidth / 2, 200);
+    }
+    loseFace() {
+
+        c.clearRect(0, 0, gameWidth, gameHeight);
+
+        background.draw()
+        this.lose()
+        // c.save();
+        // c.translate(gameWidth / 2, gameHeight / 2);
+        // c.rotate(degrees * Math.PI / 180);
+
+        this.image = new Image();
+        this.image.src = "assets/Bozo-Vomits/BV14.png";
+        c.drawImage(this.image, -this.image.width / 2, -this.image.height / 2, this.width, this.height);
+
+        // c.restore()
 
     };
 
@@ -333,7 +365,6 @@ class Vomit {
 
         //console.log(this.x +"-"+ (bozo.x + bozo.width) +" "+ this.x +this.width +"-"+ bozo.x +" -- "+ (this.y +"-"+ bozo.y+bozo.height +" "+ this.y + this.height +"-"+ bozo.y));
         if (this.x < bozo.x + bozo.width && this.x + this.width > bozo.x && this.y < bozo.y + bozo.height && this.y + this.height > bozo.y) {
-            console.log("We vomited on bozo");
             bozo.bozoAnimate(canvas);
             hitCounter++;
             return true;
@@ -341,13 +372,8 @@ class Vomit {
 
         if (this.y > gameHeight) {
             missedCounter++;
-            console.log("The vomit left the scene");
             return true;
         }
-
-
-
-
 
         return false;
     }
@@ -355,10 +381,6 @@ class Vomit {
     draw() {
         c.drawImage(this.image, this.x, this.y)
     };
-
-    reset() {
-
-    }
 
     render() {
         this.move();
