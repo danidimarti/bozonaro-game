@@ -30,7 +30,7 @@ window.onload = function () {
 
     thrower = new Thrower(gameWidth, gameHeight)
     vomit = new Vomit(gameWidth, gameHeight);
-    bozo = new Bozo();
+    bozo = new Bozo(gameWidth, gameHeight);
 
     /* -- HANDLERS -- */
     handlers = { 'thrower': thrower, 'vomit': vomit };
@@ -40,11 +40,6 @@ window.onload = function () {
     // var vomitEffect = new Audio('./audio/themesongedit.mp3');
     score = new Score();
     background = new Background(gameWidth, gameHeight);
-
-
-
-
-
 }
 
 /*====== THROW UPPER OBJECT =====*/
@@ -93,7 +88,8 @@ let lastTime = 0;
 function animate(timestamp) {
     let dt = timestamp - lastTime;
     lastTime = timestamp;
-
+    requestAnimationFrame(animate);
+    setTimeout(1000);
     // console.log("checking function loop") 
 
     // clear canvas each time you draw on top of it. Otherwise the circle will look like a continuous line
@@ -112,20 +108,20 @@ function animate(timestamp) {
     score.draw()
 
     //Process Vomit Array
-    for (var i = 0; i < vomitArray.length; i++) {
-        if (vomitArray[i] !== undefined) {
-            vomitArray[i].move();
-            vomitArray[i].render();
+        for (var i = 0; i < vomitArray.length; i++) {
+            if(vomitArray[i] !== undefined){
+                vomitArray[i].move();
+                vomitArray[i].render();
+            }
         }
-    }
-
+    
     //console.log(vomitArray);
 
-
+    
     //from single vomit to array
-    if (vomitArray !== undefined) {
+    if(vomitArray !== undefined){
         for (var i = 0; i < vomitArray.length; i++) {
-
+            
             if (vomitArray[i] !== undefined) {
                 if (vomitArray[i].firstRun == true && vomitArray[i].moving == true) {
                     vomitArray[i].firstRun = false;
@@ -133,47 +129,24 @@ function animate(timestamp) {
                     vomitArray[i].render();
                 }
                 //console.log(vomitArray[i].colision(bozo));
-
-                if (vomitArray[i].colision(bozo, canvas)) {
-
+                if( vomitArray[i].colision(bozo, canvas) ){
+                    
                     delete vomitArray[i];
                     console.log("Colision detected");
                 }
-
-
+               
+                
             }
-
-
+    
+    
             //vomitArray[i].coordinates();
         }
-    }
-    if (bozo.endGame == false) {
-        requestAnimationFrame(animate);
-    } else {
-        c.clearRect(0, 0, gameWidth, gameHeight);
-        endAnimation(timestamp);
-    }
-
-    if (Math.floor(lastTime) % 151 == 0) {
-        bozo.randomizeLocation();
     }
     
 
 }
 
-function endAnimation(timestamp) {
-    let dt = timestamp - lastTime;
-    c.clearRect(0, 0, gameWidth, gameHeight);
 
-    lastTime = timestamp;
-    // console.log("checking function loop") 
-    background.draw()
-    bozo.rotate();
-    // clear canvas each time you draw on top of it. Otherwise the circle will look like a continuous line
-
-    requestAnimationFrame(endAnimation);
-
-}
 /*======MOVE OBJECT WITH ARROW KEYS =====*/
 //Create event listener based on KeyCode number of arrows left and right.
 class InputHandler {
@@ -191,8 +164,8 @@ class InputHandler {
                     vomitArray.push(new Vomit(canvas.width, thrower.x));
                     var len = vomitArray.length;
                     //console.log(len);
-                    vomitArray[len - 1].moving = true;
-
+                    vomitArray[len-1].moving = true;
+                    
                     break;
             }
         });
@@ -222,83 +195,55 @@ class InputHandler {
 }
 
 class Bozo {
-    constructor() {
-        this.x = Math.random() * gameWidth;
-        this.y = Math.random() * gameHeight;
+    constructor(x,y) {
+        x = Math.random() * gameWidth;
+        y = Math.random() * gameHeight;
+        this.x = x;
+        this.y = y;
         this.width = 150;
         this.height = 173;
         this.image = new Image();
-        this.animStage = 0;
-        this.animLength = 14;
-        this.endGame = false;
-        this.image.src = 'assets/Bozo-Vomits/BV0.png';
-        this.validateLocation();
-
-
-    }
-
-    validateLocation() {
+        this.image.src = "assets/Bozo-Head.png";
+        this.bozoHits = [
+    { name: 'nohits', img: 'Bozo-Vomits/Bozo-Head.png' },
+    { name: 'hit-1', img: 'Bozo-Vomits/BV1.png' },
+    { name: 'hit-2', img: 'Bozo-Vomits/BV2.png' },
+    { name: 'hit-3', img: 'Bozo-Vomits/BV3.png' },
+    { name: 'hit-4', img: 'Bozo-Vomits/BV4.png' },
+    { name: 'hit-5', img: 'Bozo-Vomits/BV5.png' },
+    { name: 'hit-6', img: 'Bozo-Vomits/BV6.png' },
+    { name: 'hit-7', img: 'Bozo-Vomits/BV7.png' },
+    { name: 'hit-8', img: 'Bozo-Vomits/BV8.png' },
+    { name: 'hit-9', img: 'Bozo-Vomits/BV9.png' },
+    { name: 'hit-10', img: 'Bozo-Vomits/BV10.png' },
+    { name: 'hit-11', img: 'Bozo-Vomits/BV11.png' },
+    { name: 'hit-12', img: 'Bozo-Vomits/BV12.png' },
+    { name: 'hit-13', img: 'Bozo-Vomits/BV13.png' },
+    { name: 'hit-14', img: 'Bozo-Vomits/BV14.png' },
+  ];
+        
         // Check vertical edges
-        if (this.x + this.width >= (gameWidth)) { this.x = gameWidth - this.width; }
-        else if (this.x + this.width < (0)) { this.x = gameWidth + this.width; }
+        if (x >= (gameWidth)) { x = gameWidth - 100; }
+        else if (x < (0)) { x = gameWidth + 100; }
 
 
         //  Check horizontal edges
-        if (this.y + this.height >= (gameHeight)) { this.y = gameHeight - this.height; }
-        else if (this.y + this.height < (0)) { this.y = gameHeight + this.height; }
-
-        if (this.y < 200) {
-            this.y += 200;
-            console.log("bozo went too far up");
-        }
+        if (y >= (gameHeight)) { y = gameHeight - 100; }
+        else if (y < (0)) { y = gameHeight + 100; }
     }
-
-    bozoAnimate(canvas) {
-        //console.log(canvas);
-
-        this.animStage++;
-        if (this.animStage < this.animLength) {
-            this.image = new Image();
-            this.image.src = "assets/Bozo-Vomits/BV" + this.animStage + ".png";
-            this.x = Math.random() * gameWidth;
-            this.y = Math.random() * gameHeight;
-            this.validateLocation();
-
-        } else {
-            this.endGame = true;
-        }
-
+    bozoAnimate(canvas){
+        console.log(canvas);
+        //this.image = new Image();
+        //this.image.src = "assets/Bozo-Vomitz/BV1.png";
+        this.draw();
     }
     draw() {
-        c.drawImage(this.image, this.x, this.y);
-    };
-
-    endGameFunc(c) {
-        this.visible();
-        //c.clearRect(0, 0, gameWidth, gameHeight);
+        this.visible = true;
+        c.drawImage(this.image, this.x, this.y)
 
     };
 
-    rotate() {
-        this.x = gameWidth / 2 - this.width;
-        this.y = gameHeight / 2 - this.height;
-        this.image = new Image();
-        this.image.style.width = "200%";
-        this.image.style.height = "200%";
-        this.image.src = "assets/Bozo-Vomits/BV14.png";
-
-        c.drawImage(this.image, this.x, this.y, this.width * 2, this.height * 2);
-
-    };
-
-    randomizeLocation() {
-        this.image = new Image();
-        this.image.src = "assets/Bozo-Vomits/BV" + this.animStage + ".png";
-        this.x = Math.random() * gameWidth;
-        this.y = Math.random() * gameHeight;
-        this.validateLocation();
-    }
-
+    
 
 
 };
@@ -316,30 +261,30 @@ class Vomit {
         this.y = 60;
         this.image = new Image();
         this.image.src = "assets/vomit-smaller.png";
-
-
+        
+        
     }
     move() {
-        this.y += 5;
+        this.y += 1;
     }
     align(thrower) {
         this.x = thrower.x + thrower.width / 2 + 25;
     }
-    coordinates() {
-        console.log(this.x + "," + this.y);
+    coordinates(){
+        console.log(this.x+","+this.y);
     }
 
-    colision(bozo, canvas) {
-
+    colision(bozo,canvas) {
+        
         //console.log(this.x +"-"+ (bozo.x + bozo.width) +" "+ this.x +this.width +"-"+ bozo.x +" -- "+ (this.y +"-"+ bozo.y+bozo.height +" "+ this.y + this.height +"-"+ bozo.y));
-        if (this.x < bozo.x + bozo.width && this.x + this.width > bozo.x && this.y < bozo.y + bozo.height && this.y + this.height > bozo.y) {
+        if( this.x < bozo.x + bozo.width && this.x +this.width > bozo.x && this.y < bozo.y+bozo.height && this.y + this.height > bozo.y ) {
             console.log("We vomited on bozo");
             bozo.bozoAnimate(canvas);
             hitCounter++;
             return true;
         }
 
-        if (this.y > gameHeight) {
+        if(this.y > gameHeight){
             missedCounter++;
             console.log("The vomit left the scene");
             return true;
@@ -357,7 +302,7 @@ class Vomit {
     };
 
     reset() {
-
+        
     }
 
     render() {
