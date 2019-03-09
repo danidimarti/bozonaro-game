@@ -137,10 +137,13 @@ function animate(timestamp) {
     }
 
     if (bozo.endGame == false) {
+        
         requestAnimationFrame(animate);
     } else {
+        debugger
         c.clearRect(0, 0, gameWidth, gameHeight);
         endAnimation(timestamp);
+        
     }
 
     if (Math.floor(lastTime) % 151 == 0) {
@@ -159,13 +162,13 @@ function endAnimation(timestamp) {
     c.clearRect(0, 0, gameWidth, gameHeight);
 
     bozo.rotate(bozo.degrees);
-    
+
 }
 
 function loseAnimation(timestamp) {
     c.clearRect(0, 0, gameWidth, gameHeight);
     background.draw()
-    bozo.rotate();
+    bozo.loseFace();
 }
 
 /*======MOVE OBJECT WITH ARROW KEYS =====*/
@@ -274,14 +277,11 @@ class Bozo {
         background.draw()
         this.youWin()
         c.save();
-        // this.x = gameWidth / 2 - this.width;
-        // this.y = gameHeight / 2 - this.height;
+
         c.translate(gameWidth / 2, gameHeight / 2);
         c.rotate(degrees * Math.PI / 180);
 
         this.image = new Image();
-        // this.image.style.width = "200%";
-        // this.image.style.height = "200%";
         this.image.src = "assets/Bozo-Vomits/BV14.png";
         c.drawImage(this.image, -this.image.width / 2, -this.image.height / 2, this.width, this.height);
 
@@ -295,6 +295,7 @@ class Bozo {
         c.textAlign = "center";
         c.textBaseline = "bottom";
         c.fillText("YOU WIN!", gameWidth / 2, 200);
+        
 
     }
 
@@ -304,23 +305,27 @@ class Bozo {
         c.textAlign = "center";
         c.textBaseline = "bottom";
         c.fillText("YOU LOSE!", gameWidth / 2, 200);
+        c.fillStyle = "red";
+        c.font = "40px Cuprum";
+        c.textAlign = "center";
+        c.textBaseline = "bottom";
+        c.fillText("He is coming for you", gameWidth / 2, 500);
     }
+
+
+
     loseFace() {
 
         c.clearRect(0, 0, gameWidth, gameHeight);
 
         background.draw()
-        this.lose()
-        // c.save();
-        // c.translate(gameWidth / 2, gameHeight / 2);
-        // c.rotate(degrees * Math.PI / 180);
-
+        this.youLose()
+        c.save();
+        c.translate(gameWidth / 2, gameHeight / 2);
         this.image = new Image();
-        this.image.src = "assets/Bozo-Vomits/BV14.png";
+        this.image.src = "assets/Bozoloser.gif";
         c.drawImage(this.image, -this.image.width / 2, -this.image.height / 2, this.width, this.height);
-
-        // c.restore()
-
+        c.restore()
     };
 
     randomizeLocation() {
