@@ -136,20 +136,22 @@ function animate(timestamp) {
         }
     }
 
+
+    if (Math.floor(lastTime) % 151 == 0) {
+        bozo.randomizeLocation();
+    }
+
     if (bozo.endGame == false) {
         
         requestAnimationFrame(animate);
     } else {
-        debugger
+        requestAnimationFrame(animate);
         c.clearRect(0, 0, gameWidth, gameHeight);
         endAnimation(timestamp);
         
     }
 
-    if (Math.floor(lastTime) % 151 == 0) {
-        bozo.randomizeLocation();
-    }
-    if (missedCounter == 3) {
+    if (missedCounter == 20) {
         c.clearRect(0, 0, gameWidth, gameHeight);
         loseAnimation(timestamp);
     }
@@ -158,7 +160,7 @@ function animate(timestamp) {
 
 function endAnimation(timestamp) {
     bozo.degrees++
-    if (bozo.degrees == 360) { degrees = 0 }
+   
     c.clearRect(0, 0, gameWidth, gameHeight);
 
     bozo.rotate(bozo.degrees);
@@ -309,7 +311,7 @@ class Bozo {
         c.font = "40px Cuprum";
         c.textAlign = "center";
         c.textBaseline = "bottom";
-        c.fillText("He is coming for you", gameWidth / 2, 500);
+        c.fillText("He is coming for you", gameWidth / 2, 600);
     }
 
 
@@ -321,10 +323,10 @@ class Bozo {
         background.draw()
         this.youLose()
         c.save();
-        c.translate(gameWidth / 2, gameHeight / 2);
+        // c.translate(gameWidth / 2, gameHeight / 2);
         this.image = new Image();
-        this.image.src = "assets/Bozoloser.gif";
-        c.drawImage(this.image, -this.image.width / 2, -this.image.height / 2, this.width, this.height);
+        this.image.src = "assets/Bozolose.png";
+        c.drawImage(this.image, gameWidth / 2 - (this.width*2)/2, gameHeight / 2 - (this.height*1.5)/2, this.width *2, this.height*1.5);
         c.restore()
     };
 
